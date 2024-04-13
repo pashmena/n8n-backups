@@ -1,0 +1,516 @@
+{
+  "active": false,
+  "connections": {
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Add Handle Account",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NoOp": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Check if pagination?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if pagination?": {
+      "main": [
+        [
+          {
+            "node": "Set next URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Combine all data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set next URL": {
+      "main": [
+        [
+          {
+            "node": "Config URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine all data": {
+      "main": [
+        [
+          {
+            "node": "AddHandle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config URL": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Handle Account": {
+      "main": [
+        [
+          {
+            "node": "Config URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AddHandle": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-03-31T21:36:51.791Z",
+  "id": "p54UYfnSzc5cpixr",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "FollowersPerAccount",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -200,
+        460
+      ],
+      "typeVersion": 1,
+      "id": "3ce4e016-3877-40f9-8567-2680dd3df1b4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.next }}",
+        "options": {},
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "X-RapidAPI-Host",
+              "value": "instagram-scraper-api2.p.rapidapi.com"
+            },
+            {
+              "name": "X-RapidAPI-Key",
+              "value": "93845850ddmshfd22c9497ba1737p1665b2jsnec662bca654a"
+            }
+          ]
+        },
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "amount",
+              "value": "1000"
+            }
+          ]
+        }
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        420,
+        460
+      ],
+      "typeVersion": 1,
+      "id": "094e6711-03a3-4ed3-a948-8fcbd33a2499"
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        660,
+        540
+      ],
+      "typeVersion": 1,
+      "id": "0cf7b9c6-fdf8-4607-99d4-0991208a67c8"
+    },
+    {
+      "parameters": {
+        "functionCode": "return new Promise((resolve, reject) => {\n      setTimeout(() => { resolve([{ json: {} }]) }, 5000);\n    })\n"
+      },
+      "name": "Wait",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        820,
+        540
+      ],
+      "typeVersion": 1,
+      "id": "861c2c26-e6e0-4ba4-b486-4a0e34bad41f"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [],
+          "boolean": [
+            {
+              "value1": "={{$node[\"HTTP Request\"].json[\"pagination_token\"] ? true : false}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Check if pagination?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1060,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "29092b7a-4e25-4afe-946a-dab7f6ec9c50"
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "next",
+              "value": "={{$node[\"HTTP Request\"].json[\"pagination_token\"]}}"
+            },
+            {
+              "name": "account",
+              "value": "={{$node[\"Add Handle Account\"].json[\"account\"]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set next URL",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        420,
+        240
+      ],
+      "executeOnce": true,
+      "typeVersion": 1,
+      "id": "ca733011-9a95-44f4-bb5a-30bda422a7cf"
+    },
+    {
+      "parameters": {
+        "functionCode": "const allData = []\n\nlet counter = 0;\ndo {\n  try {\n    const items = $items(\"HTTP Request\", 0, counter).map(item => item.json.data.items);\n                    \n    const aja = items[0].map(item => {\n      return { json: item }\n    })    \n    \n    allData.push.apply(allData, aja);\n    //allData.push($items(\"Increment\", 0, counter));\n  } catch (error) {\n    return allData;  \n  }\n\n  counter++;\n} while(true);\n"
+      },
+      "name": "Combine all data",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        1260,
+        620
+      ],
+      "typeVersion": 1,
+      "id": "45d7bad9-603b-49f5-a5d6-f066ff5b07e0",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d6a034f4-9138-4bab-b085-d8bb8fac890e",
+              "name": "full_name",
+              "value": "={{ $json.full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "6f40114e-3b81-4663-9ff9-2b9ad5cd45f4",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "63b6619d-6978-4569-b6f9-bd9c06006079",
+              "name": "is_private",
+              "value": "={{ $json.is_private }}",
+              "type": "boolean"
+            },
+            {
+              "id": "6a70e57c-5b8e-46c0-9c86-88749e328f33",
+              "name": "profile_pic_url",
+              "value": "={{ $json.profile_pic_url }}",
+              "type": "string"
+            },
+            {
+              "id": "120ad7ca-e548-45ac-9c28-d8d5cba235e3",
+              "name": "username",
+              "value": "={{ $json.username }}",
+              "type": "string"
+            },
+            {
+              "id": "190ebfff-4ab4-4dfa-b9df-9f27d9d94fbf",
+              "name": "handle_name",
+              "value": "={{ $('Config URL').item.json.account }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "67d9f38c-0f1e-4db3-ad42-4dad1f0c99bc",
+      "name": "AddHandle",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        1480,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "\nlet account=items[0].json.account\n//\"1.pure_pashmina\"\n\nlet next = \"https://instagram-scraper-api2.p.rapidapi.com/v1/followers\" + \"?username_or_id_or_url=\" + account\n\n\nif (items[0].json.next) {\n  next = \"https://instagram-scraper-api2.p.rapidapi.com/v1/followers?username_or_id_or_url=\" + account + \"&pagination_token=\" + items[0].json.next \n  console.log(next)\n}\n\nreturn [\n  {\n    json: {\n      next : next,\n      account : account\n    }\n  }\n]"
+      },
+      "name": "Config URL",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        240,
+        460
+      ],
+      "typeVersion": 1,
+      "id": "8b06b455-cf2b-4759-8bd8-cbbfa1d112bf",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "48cad6ef-c39a-4bd8-a16a-adabbf7a1f32",
+              "name": "account",
+              "value": "dar_almusaar",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "id": "d03dd39f-9a57-4b64-8056-82cd0c9a9084",
+      "name": "Add Handle Account",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        0,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Add Handle Name here\nlike : 1.pure_pashmina\n",
+        "width": 197.92511269833287
+      },
+      "id": "4fd8bd96-94ec-42a4-ae5c-0f2e21f5b8ce",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "profile_followers",
+          "mode": "list",
+          "cachedResultName": "profile_followers"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "is_private": false,
+            "is_verified": false,
+            "id": 0
+          },
+          "matchingColumns": [
+            "handle_name",
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "is_private",
+              "displayName": "is_private",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "is_verified",
+              "displayName": "is_verified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "profile_pic_url",
+              "displayName": "profile_pic_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "handle_name",
+              "displayName": "handle_name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8581891b-6bd3-4d35-979f-db23011ff60d",
+      "name": "Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.3,
+      "position": [
+        1720,
+        620
+      ],
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "pDNpFnDzE8aCvYc9",
+          "name": "NeonDB"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "headerRow": true
+        }
+      },
+      "id": "f003d5e9-bfa8-4c5a-99a8-57027590bf7a",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1720,
+        820
+      ]
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-04-03T08:45:47.922Z",
+      "updatedAt": "2024-04-03T08:45:47.922Z",
+      "id": "ng2n2KYQ54asbLpR",
+      "name": "bronze_layer"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2024-04-13T11:07:43.484Z",
+  "versionId": "a4907b26-5058-4cdc-8d66-4f926409e152"
+}
