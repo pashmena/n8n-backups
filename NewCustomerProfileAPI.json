@@ -1,0 +1,837 @@
+{
+  "active": false,
+  "connections": {
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Distinct Commentors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Profile": {
+      "main": [
+        [
+          {
+            "node": "SelectFields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "customer_profiles_not_found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SelectFields": {
+      "main": [
+        [
+          {
+            "node": "Customer_Profile V1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Distinct Commentors": {
+      "main": [
+        [
+          {
+            "node": "Get Profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-04-06T10:06:15.636Z",
+  "id": "7EaHbh3HnlIIqkb6",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "NewCustomerProfileAPI",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -240,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "28db55f0-8cdb-449a-a5b8-d605a25103ad"
+    },
+    {
+      "parameters": {
+        "content": "## Fetches new accounts into customer table",
+        "width": 197.92511269833287
+      },
+      "id": "11c57d6a-3bbd-46cd-996e-317ed8dbf88b",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://instagram-scraper-api2.p.rapidapi.com/v1/info",
+        "options": {
+          "batchInterval": 1100,
+          "batchSize": 1
+        },
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "X-RapidAPI-Key",
+              "value": "93845850ddmshfd22c9497ba1737p1665b2jsnec662bca654a"
+            },
+            {
+              "name": "X-RapidAPI-Host",
+              "value": "instagram-scraper-api2.p.rapidapi.com"
+            }
+          ]
+        },
+        "queryParametersUi": {
+          "parameter": [
+            {
+              "name": "username_or_id_or_url",
+              "value": "={{ $json.username }}"
+            },
+            {
+              "name": "include_about",
+              "value": "True"
+            }
+          ]
+        }
+      },
+      "name": "Get Profile",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        280,
+        680
+      ],
+      "typeVersion": 1,
+      "id": "0e518c0b-6c3f-441b-b04a-fc706c5cbda8",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "notesInFlow": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f69569b-b6ae-4ab8-b559-ba351751f672",
+              "name": "data.about.country",
+              "value": "={{ $json.data.about.country }}",
+              "type": "string"
+            },
+            {
+              "id": "792ec411-59e9-455c-91e7-459aa06dd6b0",
+              "name": "data.about.date_joined",
+              "value": "={{ $json.data.about.date_joined }}",
+              "type": "string"
+            },
+            {
+              "id": "5508b352-4948-4fb2-b07a-683438cf3b12",
+              "name": "data.about.former_usernames",
+              "value": "={{ $json.data.about.former_usernames }}",
+              "type": "number"
+            },
+            {
+              "id": "0319d9ac-6257-4a55-92d3-5af141ac2a22",
+              "name": "data.account_type",
+              "value": "={{ $json.data.account_type }}",
+              "type": "number"
+            },
+            {
+              "id": "83326e43-532c-4445-b1d7-9d23f6f6d56e",
+              "name": "data.ads_page_name",
+              "value": "={{ $json.data.ads_page_name }}",
+              "type": "string"
+            },
+            {
+              "id": "ccab832e-1720-4db2-ae34-eb13793306d3",
+              "name": "data.follower_count",
+              "value": "={{ $json.data.follower_count }}",
+              "type": "number"
+            },
+            {
+              "id": "f8286c2d-1fb6-4054-977b-3923a1f85ec7",
+              "name": "data.following_count",
+              "value": "={{ $json.data.following_count }}",
+              "type": "number"
+            },
+            {
+              "id": "848bacf2-2525-4115-b82f-51f8aa108ae2",
+              "name": "data.full_name",
+              "value": "={{ $json.data.full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "af6111b1-42c8-484c-bf9c-4b3e3576a4e6",
+              "name": "data.fbid_v2",
+              "value": "={{ $json.data.fbid_v2 }}",
+              "type": "number"
+            },
+            {
+              "id": "e61651d5-7f9a-4e3a-847d-dd0ca3c20d5a",
+              "name": "data.id",
+              "value": "={{ $json.data.id }}",
+              "type": "string"
+            },
+            {
+              "id": "86fdd9f2-a578-4d65-9b9b-9a93d8ce661f",
+              "name": "data.is_business",
+              "value": "={{ $json.data.is_business }}",
+              "type": "boolean"
+            },
+            {
+              "id": "7d760072-ab45-4774-b7ab-47c8f94fb47e",
+              "name": "data.is_private",
+              "value": "={{ $json.data.is_private }}",
+              "type": "boolean"
+            },
+            {
+              "id": "957c820c-e87e-48c3-9776-8d22ce942010",
+              "name": "data.is_verified",
+              "value": "={{ $json.data.is_verified }}",
+              "type": "boolean"
+            },
+            {
+              "id": "a516a112-ebc9-4520-94ed-f6570227d6ba",
+              "name": "data.location_data.address_street",
+              "value": "={{ $json.data.location_data.address_street }}",
+              "type": "string"
+            },
+            {
+              "id": "eb78f770-f4d5-4f35-b808-f33fe4a047db",
+              "name": "data.location_data.city_id",
+              "value": "={{ $json.data.location_data.city_id }}",
+              "type": "string"
+            },
+            {
+              "id": "8df4c9b9-f908-4f55-8366-9308e7709627",
+              "name": "data.location_data.city_name",
+              "value": "={{ $json.data.location_data.city_name }}",
+              "type": "string"
+            },
+            {
+              "id": "7aacc9a0-0ff8-478e-b01b-13612f8f5217",
+              "name": "data.location_data.instagram_location_id",
+              "value": "={{ $json.data.location_data.instagram_location_id }}",
+              "type": "string"
+            },
+            {
+              "id": "32a129f7-0fa4-4a7f-962e-7f74464fb14a",
+              "name": "data.location_data.latitude",
+              "value": "={{ $json.data.location_data.latitude }}",
+              "type": "string"
+            },
+            {
+              "id": "9f319277-face-4817-b6b9-9c4e05cb09c7",
+              "name": "data.location_data.longitude",
+              "value": "={{ $json.data.location_data.longitude }}",
+              "type": "string"
+            },
+            {
+              "id": "529c8118-4c7c-4aec-917f-8c11f6df3ed1",
+              "name": "data.location_data.zip",
+              "value": "={{ $json.data.location_data.zip }}",
+              "type": "string"
+            },
+            {
+              "id": "6e0ebf38-4d8a-44ce-a700-004e9ebf2f00",
+              "name": "data.media_count",
+              "value": "={{ $json.data.media_count }}",
+              "type": "number"
+            },
+            {
+              "id": "12f41009-ed3b-4687-b45e-51ba37b89ce6",
+              "name": "data.page_id",
+              "value": "={{ $json.data.page_id }}",
+              "type": "string"
+            },
+            {
+              "id": "fb78609f-3dd8-4b43-b45f-c0b243c0dff1",
+              "name": "data.page_name",
+              "value": "={{ $json.data.page_name }}",
+              "type": "string"
+            },
+            {
+              "id": "bc0a6f6f-3254-4924-81c7-05228ded1874",
+              "name": "data.profile_context",
+              "value": "={{ $json.data.profile_context }}",
+              "type": "string"
+            },
+            {
+              "id": "29400d7c-ac64-4994-aab0-38c315b9220e",
+              "name": "data.biography_email",
+              "value": "={{ $json.data.biography_email }}",
+              "type": "string"
+            },
+            {
+              "id": "69f7933f-1dce-4c4b-9688-6d6ee9311038",
+              "name": "data.username",
+              "value": "={{ $json.data.username }}",
+              "type": "string"
+            },
+            {
+              "id": "f79a2bb7-f5a2-412a-a34c-058609332234",
+              "name": "data.biography_with_entities.raw_text",
+              "value": "={{ $json.data.biography_with_entities.raw_text }}",
+              "type": "string"
+            },
+            {
+              "id": "9fcbfc5b-cd4f-4145-be72-ab7704dc60d0",
+              "name": "data.biography",
+              "value": "={{ $json.data.biography }}",
+              "type": "string"
+            },
+            {
+              "id": "7602b75c-0750-46ad-b92b-1d2395911cdd",
+              "name": "data.bio_links",
+              "value": "={{ $json.data.bio_links }}",
+              "type": "array"
+            },
+            {
+              "id": "a30ae877-39b0-4f7e-b1ff-217ab93a5301",
+              "name": "data.contact_phone_number",
+              "value": "={{ $json.data.contact_phone_number }}",
+              "type": "string"
+            },
+            {
+              "id": "c1fdacea-9214-4176-8996-93d715388adc",
+              "name": "data.direct_messaging",
+              "value": "={{ $json.data.direct_messaging }}",
+              "type": "string"
+            },
+            {
+              "id": "e0a30958-3f93-4721-9945-8b1c9642c559",
+              "name": "data.is_business",
+              "value": "={{ $json.data.is_business }}",
+              "type": "boolean"
+            },
+            {
+              "id": "68cadd3b-6561-4488-89cc-9e73d9f6c074",
+              "name": "data.public_email",
+              "value": "={{ $json.data.public_email }}",
+              "type": "string"
+            },
+            {
+              "id": "5f6f93ad-0ec0-4cde-9ba0-38e080bb1b1c",
+              "name": "data.public_phone_country_code",
+              "value": "={{ $json.data.public_phone_country_code }}",
+              "type": "string"
+            },
+            {
+              "id": "b6a389cc-99d1-4a4a-b73b-f762a313cf8a",
+              "name": "data.public_phone_number",
+              "value": "={{ $json.data.public_phone_number }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8ebb99bd-4a78-4c6c-aa82-c97da1a910bc",
+      "name": "SelectFields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [
+        520,
+        660
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customer_profiles_v1",
+          "mode": "list",
+          "cachedResultName": "customer_profiles_v1"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "is_business": "={{ $json.data.is_business }}",
+            "is_private": "={{ $json.data.is_private }}",
+            "is_verified": "={{ $json.data.is_verified }}",
+            "public_phone_number": "={{ $json.data.public_phone_number }}",
+            "public_phone_country_code": "={{ $json.data.public_phone_country_code }}",
+            "public_email": "={{ $json.data.public_email }}",
+            "direct_messaging": "={{ $json.data.direct_messaging }}",
+            "contact_phone_number": "={{ $json.data.contact_phone_number }}",
+            "biography_email": "={{ $json.data.biography_email }}",
+            "biography_raw": "={{ $json.data.biography_with_entities.raw_text }}",
+            "biography": "={{ $json.data.biography }}",
+            "profile_context": "={{ $json.data.profile_context }}",
+            "page_name": "={{ $json.data.page_name }}",
+            "media_count": "={{ $json.data.media_count }}",
+            "page_id": "={{ $json.data.page_id }}",
+            "zip": "={{ $json.data.location_data.zip }}",
+            "longitude": "={{ $json.data.location_data.longitude }}",
+            "latitude": "={{ $json.data.location_data.latitude }}",
+            "instagram_location_id": "={{ $json.data.location_data.instagram_location_id }}",
+            "city_name": "={{ $json.data.location_data.city_name }}",
+            "city_id": "={{ $json.data.location_data.city_id }}",
+            "address_street": "={{ $json.data.location_data.address_street }}",
+            "following_count": "={{ $json.data.following_count }}",
+            "follower_count": "={{ $json.data.follower_count }}",
+            "ads_page_name": "={{ $json.data.ads_page_name }}",
+            "account_type": "={{ $json.data.account_type }}",
+            "former_usernames": "={{ $json.data.about.former_usernames }}",
+            "date_joined": "={{ $json.data.about.date_joined }}",
+            "country": "={{ $json.data.about.country }}",
+            "full_name": "={{ $json.data.full_name }}",
+            "username": "={{ $json.data.username }}",
+            "id": "={{ $json.data.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "full_name",
+              "displayName": "full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "date_joined",
+              "displayName": "date_joined",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "former_usernames",
+              "displayName": "former_usernames",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "account_type",
+              "displayName": "account_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "ads_page_name",
+              "displayName": "ads_page_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "follower_count",
+              "displayName": "follower_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "following_count",
+              "displayName": "following_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "is_business",
+              "displayName": "is_business",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "is_private",
+              "displayName": "is_private",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "is_verified",
+              "displayName": "is_verified",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "address_street",
+              "displayName": "address_street",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "city_id",
+              "displayName": "city_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "city_name",
+              "displayName": "city_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "instagram_location_id",
+              "displayName": "instagram_location_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "latitude",
+              "displayName": "latitude",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "longitude",
+              "displayName": "longitude",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "zip",
+              "displayName": "zip",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "media_count",
+              "displayName": "media_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "page_id",
+              "displayName": "page_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false,
+              "removed": false
+            },
+            {
+              "id": "page_name",
+              "displayName": "page_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "profile_context",
+              "displayName": "profile_context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "biography",
+              "displayName": "biography",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "biography_raw",
+              "displayName": "biography_raw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "biography_email",
+              "displayName": "biography_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "contact_phone_number",
+              "displayName": "contact_phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "direct_messaging",
+              "displayName": "direct_messaging",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "public_email",
+              "displayName": "public_email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "public_phone_country_code",
+              "displayName": "public_phone_country_code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "public_phone_number",
+              "displayName": "public_phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "handle_name",
+              "displayName": "handle_name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2f28a942-f3fd-41f3-a1fe-2faebcf55952",
+      "name": "Customer_Profile V1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.3,
+      "position": [
+        740,
+        660
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "pDNpFnDzE8aCvYc9",
+          "name": "NeonDB"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select DISTINCT username from post_commentors\nwhere username not in (select distinct username from customer_profiles_v1) \nand username not in (select distinct username from customer_profiles_not_found)\nlimit 1000",
+        "options": {}
+      },
+      "id": "8b4eec65-fb22-4904-8241-038eed4cbed9",
+      "name": "Distinct Commentors",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.3,
+      "position": [
+        20,
+        680
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "pDNpFnDzE8aCvYc9",
+          "name": "NeonDB"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customer_profiles_not_found",
+          "mode": "list",
+          "cachedResultName": "customer_profiles_not_found"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "username": "={{ $json.username }}",
+            "message": "={{ JSON.parse($json.error.message.split(' - ')[1]).detail}}"
+          },
+          "matchingColumns": [
+            "username"
+          ],
+          "schema": [
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "53060062-9ec1-434e-842b-d8210e404345",
+      "name": "customer_profiles_not_found",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.3,
+      "position": [
+        740,
+        880
+      ],
+      "alwaysOutputData": true,
+      "notesInFlow": false,
+      "credentials": {
+        "postgres": {
+          "id": "pDNpFnDzE8aCvYc9",
+          "name": "NeonDB"
+        }
+      },
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-04-03T08:45:47.922Z",
+      "updatedAt": "2024-04-03T08:45:47.922Z",
+      "id": "ng2n2KYQ54asbLpR",
+      "name": "bronze_layer"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2024-04-13T11:08:04.434Z",
+  "versionId": "b976c855-bf2e-43fc-a664-003ab8a5ee1a"
+}
