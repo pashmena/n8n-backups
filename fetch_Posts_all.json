@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "Retrieve Sheets Data1",
+            "node": "all_posts",
             "type": "main",
             "index": 0
           }
@@ -92,15 +92,15 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "https://docs.google.com/spreadsheets/d/1bB2B5YTcWnvw2DbC2L5l3HbVg3KaSM9bGe6lEe3cQDI/",
-          "mode": "url"
+          "value": "1-PVd8oyUesB7T0jwJX7s7RIdkLREaGKriWFovOfE3rI",
+          "mode": "id"
         },
         "sheetName": {
           "__rl": true,
-          "value": "gid=0",
+          "value": 1545073103,
           "mode": "list",
           "cachedResultName": "all_posts",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bB2B5YTcWnvw2DbC2L5l3HbVg3KaSM9bGe6lEe3cQDI/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-PVd8oyUesB7T0jwJX7s7RIdkLREaGKriWFovOfE3rI/edit#gid=1545073103"
         },
         "columns": {
           "mappingMode": "autoMapInputData",
@@ -353,7 +353,7 @@
         "options": {}
       },
       "id": "3b8d380a-ad34-42d4-a570-9111f895c115",
-      "name": "Retrieve Sheets Data1",
+      "name": "all_posts",
       "type": "n8n-nodes-base.googleSheets",
       "position": [
         900,
@@ -386,6 +386,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2024-04-11T19:12:32.933Z",
-  "versionId": "49ff9024-355e-414f-926f-5c9205b0909b"
+  "updatedAt": "2024-04-14T10:30:41.219Z",
+  "versionId": "a7c0f96e-0f62-4fab-8b7e-4235a9033a8d"
 }
