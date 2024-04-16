@@ -1,0 +1,68 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking \"Test workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-04-15T17:41:39.399Z",
+  "id": "c4j8ViTVVxXpW2yr",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "467d64ae-056f-4f47-b05f-4eb07f6925a0",
+      "name": "When clicking \"Test workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        820,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "fileFolder",
+        "queryString": "https://drive.google.com/drive/folders/1CECX1LTqY5KsS3ljM92SPoBjmOygg-cq?ths=true",
+        "returnAll": true,
+        "filter": {},
+        "options": {}
+      },
+      "id": "8df77308-f84c-441e-b006-3797f3df66f6",
+      "name": "Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        360
+      ],
+      "credentials": {
+        "googleApi": {
+          "id": "BAbqMbHohhx8suP6",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-04-15T17:41:39.399Z",
+  "versionId": "f44e0cab-5778-4b8c-afd8-196c13a7c026"
+}
